@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../normalize.min.css">
+    <link rel="stylesheet" href="video.css">
+    <title>Demo: HTML video element's playbackRate</title>
+</head>
+<body>
+    <h1>Demo: HTML video element's <code>playbackRate</code></h1>
+    
+    <main>
+        <video id="videoElement" controls poster="velocity-thumbnail.jpg">
+            <source src="https://s3-ap-northeast-1.amazonaws.com/daniemon/demos/Velocity-Mobile.mp4" type="video/mp4" media="all and (max-width:680px)"> 
+            <source src="https://s3-ap-northeast-1.amazonaws.com/daniemon/demos/Velocity-Mobile.webm" type="video/webm" media="all and (max-width:680px)"> 
+            <source src="https://s3-ap-northeast-1.amazonaws.com/daniemon/demos/Velocity-SD.mp4" type="video/mp4">
+            <source src="https://s3-ap-northeast-1.amazonaws.com/daniemon/demos/Velocity-SD.webm" type="video/webm">
+            <p>Sorry, there's a problem playing this video. Please try using a different browser.</p>
+        </video>
+        
+        <p class="controls">
+            <label>playbackRate: <input type="range" step="0.1" min="0.5" max="2" value="1" id="rateSlider"></label> <span id="rateOutput" aria-live="polite"></span>
+        </p>
+    </main>
+    
+    <aside>
+        <p>This is a demo of the <a href="http://www.w3.org/TR/html/embedded-content-0.html#playing-the-media-resource"><code>playbackRate</code> attribute</a> of the HTML <code>&lt;audio&gt;</code> and <code>&lt;video&gt;</code> elements. You can change the speed of media while it's playing and cleverly the pitch stays the same, so nobody sounds like a chipmunk. For further details, Mozilla has a <a href="https://developer.mozilla.org/en-US/Apps/Build/Manipulating_media/HTML5_playbackRate_explained">good tutorial</a> or view the source of this page to see the code.</p>
+        
+        <p>Video: <a href="http://vimeo.com/47980891">Velocity</a> by Jedd Goble</p>
+    </aside>
+    
+    <footer>Here are more <a href="http://daniemon.com/tech/">web demos</a> by <a href="https://twitter.com/ourmaninjapan" rel="author">Daniel Davis</a>.</footer>
+
+    <script>
+    // Inline code is for educational purposes. Best practice is to put your scripts in external files.
+    (function() {
+        'use strict';
+        
+        var video = document.getElementById("videoElement");
+        var rateOutput = document.getElementById('rateOutput');
+        var rateSlider = document.getElementById('rateSlider');
+        
+        rateSlider.onchange = function(event) {
+            // When the slider is moved, changed the video's playback rate
+            video.playbackRate = rateSlider.value;
+        };
+        
+        video.onplay = function(event) {
+            // We can only change the playbackRate once the video has started playing
+            video.playbackRate = rateSlider.value;
+        };
+        
+        video.onratechange = function(event) {
+            // When the playback rate changes, display the new value
+            rateOutput.textContent = video.playbackRate;
+            
+            // And let's have some colourful fun while we're here
+            document.body.style.background = 'hsl(' + (video.playbackRate * 180) + ', 50%, 15%)';
+        };
+        
+        rateOutput.textContent = rateSlider.value;
+    })();
+    </script>
+</body>
+</html>
